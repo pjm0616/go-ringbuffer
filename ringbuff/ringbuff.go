@@ -7,6 +7,7 @@ type RingBuffer struct {
 	highWaterMark int
 }
 
+// New creates a new RingBuffer capped at the specified size.
 func New(size int) *RingBuffer {
 	return &RingBuffer{
 		items:         make([]interface{}, size),
@@ -15,6 +16,7 @@ func New(size int) *RingBuffer {
 	}
 }
 
+// Add adds an item to the RingBuffer.
 func (buffer *RingBuffer) Add(item interface{}) {
 	buffer.items[buffer.index] = item
 	// Update highWaterMark
@@ -28,6 +30,7 @@ func (buffer *RingBuffer) Add(item interface{}) {
 	}
 }
 
+// ForEach iterates over the RingBuffer starting with the oldest item.
 func (buffer *RingBuffer) ForEach(fn func(interface{})) {
 	if buffer.highWaterMark == -1 {
 		// empty
