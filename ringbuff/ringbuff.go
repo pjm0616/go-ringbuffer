@@ -70,3 +70,8 @@ func (buffer *RingBuffer) ForEach(fn func(interface{})) {
 		fn(buffer.items[index])
 	}
 }
+
+// Size reports how many items are currently held in the RingBuffer.
+func (buffer *RingBuffer) Size() int {
+	return buffer.highWaterMark + 1
+}

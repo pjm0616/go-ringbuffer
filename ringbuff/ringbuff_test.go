@@ -11,6 +11,9 @@ func TestEmptyBuffer(t *testing.T) {
 	buffer.ForEach(func(item interface{}) {
 		results = append(results, item.(int))
 	})
+	if buffer.Size() != 0 {
+		t.Errorf("Wrong size reported: %s", 0)
+	}
 	if !equals(results, expectedResults) {
 		t.Errorf("Empty ringbuffer yielded wrong results: %s", results)
 	}
@@ -33,6 +36,9 @@ func TestNonWrappedBuffer(t *testing.T) {
 	buffer.ForEach(func(item interface{}) {
 		results = append(results, item.(int))
 	})
+	if buffer.Size() != 10 {
+		t.Errorf("Wrong size reported: %s", 0)
+	}
 	if !equals(results, expectedResults) {
 		t.Errorf("Non-wrapped ringbuffer yielded wrong results: %s", results)
 	}
@@ -56,6 +62,9 @@ func TestWrappedBuffer(t *testing.T) {
 	buffer.ForEach(func(item interface{}) {
 		results = append(results, item.(int))
 	})
+	if buffer.Size() != 10 {
+		t.Errorf("Wrong size reported: %s", 0)
+	}
 	if !equals(results, expectedResults) {
 		t.Errorf("Wrapped ringbuffer yielded wrong results: %s", results)
 	}
