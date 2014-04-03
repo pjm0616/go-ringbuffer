@@ -1,4 +1,24 @@
-// Package ringbuff provides a minimalist ring buffer
+// Package ringbuff provides a minimalist ring buffer.
+//
+// Example:
+//
+//   buffer := New(10)
+//   results := []int{}
+//   expectedResults := []int{2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
+//   buffer.Add(1)
+//   buffer.Add(2)
+//   buffer.Add(3)
+//   buffer.Add(4)
+//   buffer.Add(5)
+//   buffer.Add(6)
+//   buffer.Add(7)
+//   buffer.Add(8)
+//   buffer.Add(9)
+//   buffer.Add(10)
+//   buffer.Add(11)
+//   buffer.ForEach(func(item interface{}) {
+//      results = append(results, item.(int))
+//   })
 package ringbuff
 
 type RingBuffer struct {
