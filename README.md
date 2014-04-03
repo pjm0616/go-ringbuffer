@@ -1,6 +1,6 @@
 To install:
 
-`go get github.com/oxtoacart/go-ringbuffer`
+`go get github.com/oxtoacart/go-ringbuffer/ringbuff`
 
 For docs:
 
