@@ -29,6 +29,9 @@ type RingBuffer struct {
 
 // New creates a new RingBuffer capped at the specified size.
 func New(size int) *RingBuffer {
+	if size <= 0 {
+		panic("invalid size for RingBuffer")
+	}
 	return &RingBuffer{
 		items:         make([]interface{}, size),
 		index:         0,
