@@ -75,4 +75,20 @@ func (buffer *RingBuffer) ForEach(fn func(interface{})) {
 func (buffer *RingBuffer) Size() int {
 	return buffer.highWaterMark
 }
+
+func (buffer *RingBuffer) Get(idx int) (interface{}, bool) {
+	if idx < 0 || idx >= buffer.highWaterMark {
+		return nil, false
+	}
+	ringIdx := buffer.index - buffer.highWaterMark
+	if ringIdx < 0 {
+		// wrap around
+		ringIdx += len(buffer.items)
+	}
+	ringIdx += idx
+	if ringIdx >= buffer.highWaterMark {
+		// wrap around
+		ringIdx = ringIdx - buffer.highWaterMark
+	}
+	return buffer.items[ringIdx], true
 }
