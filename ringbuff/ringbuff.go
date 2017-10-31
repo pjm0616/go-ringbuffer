@@ -32,7 +32,7 @@ func New(size int) *RingBuffer {
 	return &RingBuffer{
 		items:         make([]interface{}, size),
 		index:         0,
-		highWaterMark: -1,
+		highWaterMark: 0,
 	}
 }
 
@@ -40,8 +40,8 @@ func New(size int) *RingBuffer {
 func (buffer *RingBuffer) Add(item interface{}) {
 	buffer.items[buffer.index] = item
 	// Update highWaterMark
-	if buffer.index > buffer.highWaterMark {
-		buffer.highWaterMark = buffer.index
+	if buffer.index >= buffer.highWaterMark {
+		buffer.highWaterMark = buffer.index + 1
 	}
 	// Advance index
 	buffer.index++
@@ -52,20 +52,20 @@ func (buffer *RingBuffer) Add(item interface{}) {
 
 // ForEach iterates over the RingBuffer starting with the oldest item.
 func (buffer *RingBuffer) ForEach(fn func(interface{})) {
-	if buffer.highWaterMark == -1 {
+	if buffer.highWaterMark == 0 {
 		// empty
 		return
 	}
-	start := buffer.index - 1 - buffer.highWaterMark
+	start := buffer.index - buffer.highWaterMark
 	if start < 0 {
 		// wrap around
 		start += len(buffer.items)
 	}
-	for i := start; i <= start+buffer.highWaterMark; i++ {
+	for i := start; i < start+buffer.highWaterMark; i++ {
 		index := i
-		if index > buffer.highWaterMark {
+		if index >= buffer.highWaterMark {
 			// wrap around
-			index = index - buffer.highWaterMark - 1
+			index = index - buffer.highWaterMark
 		}
 		fn(buffer.items[index])
 	}
@@ -73,5 +73,6 @@ func (buffer *RingBuffer) ForEach(fn func(interface{})) {
 
 // Size reports how many items are currently held in the RingBuffer.
 func (buffer *RingBuffer) Size() int {
-	return buffer.highWaterMark + 1
+	return buffer.highWaterMark
+}
 }
