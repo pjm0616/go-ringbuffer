@@ -25,6 +25,7 @@ type RingBuffer struct {
 	items         []interface{}
 	index         int
 	highWaterMark int
+	evictHandler  func(item interface{})
 }
 
 // New creates a new RingBuffer capped at the specified size.
@@ -39,8 +40,22 @@ func New(size int) *RingBuffer {
 	}
 }
 
+// SetEvictHandler registers a function which will be called when an item is evicted.
+// `fn` will block, since it'll be called inline.
+func (buffer *RingBuffer) SetEvictHandler(fn func(item interface{})) {
+	buffer.evictHandler = fn
+}
+
 // Add adds an item to the RingBuffer.
 func (buffer *RingBuffer) Add(item interface{}) {
+	if buffer.evictHandler != nil {
+		if buffer.index < buffer.highWaterMark {
+			// An item will be removed by this Add call.
+			// Call the item evict handler.
+			buffer.evictHandler(buffer.items[buffer.index])
+		}
+	}
+	// Set the item
 	buffer.items[buffer.index] = item
 	// Update highWaterMark
 	if buffer.index >= buffer.highWaterMark {
