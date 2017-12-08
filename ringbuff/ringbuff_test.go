@@ -12,10 +12,10 @@ func TestEmptyBuffer(t *testing.T) {
 		results = append(results, item.(int))
 	})
 	if buffer.Size() != 0 {
-		t.Errorf("Wrong size reported: %s", 0)
+		t.Errorf("Wrong size reported: %d", 0)
 	}
 	if !equals(results, expectedResults) {
-		t.Errorf("Empty ringbuffer yielded wrong results: %s", results)
+		t.Errorf("Empty ringbuffer yielded wrong results: %v", results)
 	}
 }
 
@@ -37,10 +37,10 @@ func TestNonWrappedBuffer(t *testing.T) {
 		results = append(results, item.(int))
 	})
 	if buffer.Size() != 10 {
-		t.Errorf("Wrong size reported: %s", 0)
+		t.Errorf("Wrong size reported: %d", 0)
 	}
 	if !equals(results, expectedResults) {
-		t.Errorf("Non-wrapped ringbuffer yielded wrong results: %s", results)
+		t.Errorf("Non-wrapped ringbuffer yielded wrong results: %v", results)
 	}
 }
 
@@ -63,10 +63,10 @@ func TestWrappedBuffer(t *testing.T) {
 		results = append(results, item.(int))
 	})
 	if buffer.Size() != 10 {
-		t.Errorf("Wrong size reported: %s", 0)
+		t.Errorf("Wrong size reported: %d", 0)
 	}
 	if !equals(results, expectedResults) {
-		t.Errorf("Wrapped ringbuffer yielded wrong results: %s", results)
+		t.Errorf("Wrapped ringbuffer yielded wrong results: %v", results)
 	}
 }
 
@@ -112,10 +112,10 @@ func TestWrappedBufferWithEvictHandler(t *testing.T) {
 
 	// Check the buffer contents.
 	if buffer.Size() != 10 {
-		t.Errorf("Wrong size reported: %s", 0)
+		t.Errorf("Wrong size reported: %d", 0)
 	}
 	if !equals(results, expectedResults) {
-		t.Errorf("Wrapped ringbuffer yielded wrong results: %s", results)
+		t.Errorf("Wrapped ringbuffer yielded wrong results: %v", results)
 	}
 	// Check evicted items.
 	if len(evicted) != 1 {
