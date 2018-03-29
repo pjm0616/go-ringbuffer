@@ -94,7 +94,8 @@ func (buffer *RingBuffer) Size() int {
 	return buffer.highWaterMark
 }
 
-func (buffer *RingBuffer) Get(idx int) (interface{}, bool) {
+// Get returns the item at the given index.
+func (buffer *RingBuffer) Get(idx int) (item interface{}, ok bool) {
 	if idx < 0 || idx >= buffer.highWaterMark {
 		return nil, false
 	}
